@@ -34,30 +34,42 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index', ['filter' => 'auth']);
 $routes->post('register', 'Register::index');
 $routes->post('login', 'Login::index');
+
 $routes->get('category', 'Category::index', ['filter' => 'auth']);
 $routes->post('category_add', 'Category::create', ['filter' => 'auth']);
 $routes->post('category_edit', 'Category::update', ['filter' => 'auth']);
-$routes->delete('category_delete', 'Category::delete', ['filter' => 'auth']);
+$routes->post('category_delete', 'Category::delete', ['filter' => 'auth']);
 
 $routes->get('customer', 'Customer::index', ['filter' => 'auth']);
 $routes->post('customer_add', 'Customer::create', ['filter' => 'auth']);
 $routes->post('customer_edit', 'Customer::update', ['filter' => 'auth']);
-$routes->delete('customer_delete', 'Customer::delete', ['filter' => 'auth']);
+$routes->post('customer_delete', 'Customer::delete', ['filter' => 'auth']);
 
 $routes->get('gender', 'Gender::index', ['filter' => 'auth']);
 $routes->post('gender_add', 'Gender::create', ['filter' => 'auth']);
 $routes->post('gender_edit', 'Gender::update', ['filter' => 'auth']);
-$routes->delete('gender_delete', 'Gender::delete', ['filter' => 'auth']);
+$routes->post('gender_delete', 'Gender::delete', ['filter' => 'auth']);
 
 $routes->get('type', 'Type::index', ['filter' => 'auth']);
 $routes->post('type_add', 'Type::create', ['filter' => 'auth']);
 $routes->post('type_edit', 'Type::update', ['filter' => 'auth']);
-$routes->delete('type_delete', 'Type::delete', ['filter' => 'auth']);
+$routes->post('type_delete', 'Type::delete', ['filter' => 'auth']);
 
 $routes->get('inventory', 'Inventory::index', ['filter' => 'auth']);
 $routes->post('inventory_add', 'Inventory::create', ['filter' => 'auth']);
 $routes->post('inventory_edit', 'Inventory::update', ['filter' => 'auth']);
-$routes->delete('inventory_delete', 'Inventory::delete', ['filter' => 'auth']);
+$routes->post('inventory_delete', 'Inventory::delete', ['filter' => 'auth']);
+
+$routes->get('position', 'Position::index', ['filter' => 'auth']);
+$routes->post('position_add', 'Position::create', ['filter' => 'auth']);
+$routes->post('position_edit', 'Position::update', ['filter' => 'auth']);
+$routes->post('position_delete', 'Position::delete', ['filter' => 'auth']);
+
+$routes->get('product', 'Product::index', ['filter' => 'auth']);
+$routes->post('product_add', 'Product::create', ['filter' => 'auth']);
+$routes->post('product_edit', 'Product::update', ['filter' => 'auth']);
+$routes->post('product_delete', 'Product::delete', ['filter' => 'auth']);
+
 
 /*
  * --------------------------------------------------------------------
