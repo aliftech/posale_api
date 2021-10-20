@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ProductModel extends Model
+class BrandModel extends Model
 {
     protected $DBGroup              = 'default';
-    protected $table                = 'products';
+    protected $table                = 'brands';
     protected $primaryKey           = 'id';
     protected $useAutoIncrement     = true;
     protected $insertID             = 0;
@@ -17,7 +17,7 @@ class ProductModel extends Model
     protected $allowedFields        = [
         'id',
         'code',
-        'product',
+        'brand',
         'created_by',
         'created_at'
     ];

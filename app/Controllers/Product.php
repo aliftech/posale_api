@@ -62,9 +62,7 @@ class Product extends ResourceController
 
         $rules = [
             'code' => 'required|numeric',
-            'product' => 'required',
-            'product_img' => 'uploaded[product_img]|max_size[product_img, 4096]|is_image[product_img]',
-            'description' => 'required'
+            'product' => 'required'
         ];
 
         if(!$this->validate($rules)) {
@@ -85,18 +83,9 @@ class Product extends ResourceController
 
             $model = new ProductModel();
 
-            $file = $this->request->getFile('product_img');
-            
-            if(! $file->isValid())
-                return $this->fail($file->getErrorString());
-
-            $file->move('./image/product');
-
             $data = [
                 'code' => $this->request->getVar('code'),
                 'product' => $this->request->getVar('product'),
-                'product_img' => $file->getName(),
-                'description' => $this->request->getVar('description'),
                 'created_by' => $username,
                 'created_at' => Time::now()->setTimezone('Asia/Jakarta')
             ];
@@ -136,9 +125,7 @@ class Product extends ResourceController
 
         $rules = [
             'code' => 'required|numeric',
-            'product' => 'required',
-            'product_img' => 'uploaded[product_img]|max_size[product_img, 4096]|is_image[product_img]',
-            'description' => 'required'
+            'product' => 'required'
         ];
 
         if(!$this->validate($rules)) {
@@ -159,18 +146,9 @@ class Product extends ResourceController
 
             $model = new ProductModel();
 
-            $file = $this->request->getFile('product_img');
-            
-            if(! $file->isValid())
-                return $this->fail($file->getErrorString());
-
-            $file->move('./image/product');
-
             $data = [
                 'code' => $this->request->getVar('code'),
-                'product' => $this->request->getVar('product'),
-                'product_img' => $file->getName(),
-                'description' => $this->request->getVar('description')
+                'product' => $this->request->getVar('product')
             ];
 
             $model->update($id, $data);
@@ -212,6 +190,23 @@ class Product extends ResourceController
                 'msg' => 'Something wrong! Please try again later'
             ];
             return $this->respond($res);
+        }
+    }
+
+    public function count()
+    {
+        $model = new ProductModel();
+        $count = $model->countAll();
+
+        if($count) {
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'count' => $count
+            ];
+            return $this->respond($res);
+        } else {
+            return $this->failNotFound('No data yet');
         }
     }
 }

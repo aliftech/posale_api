@@ -4,11 +4,11 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\InventoryModel;
+use App\Models\BrandModel;
 use Firebase\JWT\JWT;
 use \CodeIgniter\I18n\Time;
 
-class Inventory extends ResourceController
+class Brand extends ResourceController
 {
     /**
      * Return an array of resource objects, themselves in array format
@@ -19,7 +19,7 @@ class Inventory extends ResourceController
     {
         //
 
-        $model = new InventoryModel();
+        $model = new BrandModel();
         $data = $model->orderBy('id', 'DESC')->findAll();
         $res = [
             'status' => 200,
@@ -59,23 +59,10 @@ class Inventory extends ResourceController
         //
 
         helper(['form']);
-
         $rules = [
             'code' => 'required|numeric',
-            'image' => 'uploaded[image]|max_size[image, 4096]|is_image[image]',
-            'product' => 'required',
-            'brand' => 'required',
-            'category' => 'required',
-            'type' => 'required',
-            'description' => 'required',
-            'suplyer' => 'required',
-            'stock' => 'required|numeric',
-            'min_stock' => 'required|numeric',
-            'buy' => 'required|numeric',
-            'sell' => 'required|numeric',
-            'status' => 'required'
+            'brand' => 'required'
         ];
-
         if(!$this->validate($rules)) {
             $res = [
                 'status' => 400,
@@ -92,36 +79,15 @@ class Inventory extends ResourceController
             $decoded = JWT::decode($token, $key, ['HS256']);
             $username = $decoded->username;
 
-            $model = new InventoryModel();
-
-            $file = $this->request->getFile('image');
-            
-            if(! $file->isValid())
-                return $this->fail($file->getErrorString());
-
-            $file->move('./image/product');
+            $model = new BrandModel();
 
             $data = [
                 'code' => $this->request->getVar('code'),
-                'image' => $file->getName(),
-                'product' => $this->request->getVar('product'),
                 'brand' => $this->request->getVar('brand'),
-                'category' => $this->request->getVar('category'),
-                'type' => $this->request->getVar('type'),
-                'description' => $this->request->getVar('description'),
-                'suplyer' => $this->request->getVar('suplyer'),
-                'stock' => $this->request->getVar('stock'),
-                'min_stock' => $this->request->getVar('min_stock'),
-                'buy_price' => $this->request->getVar('buy'),
-                'sell_price' => $this->request->getVar('sell'),
-                'profit' => $this->request->getVar('sell') - $this->request->getVar('buy'),
-                'status' => $this->request->getVar('status'),
                 'created_by' => $username,
                 'created_at' => Time::now()->setTimezone('Asia/Jakarta')
             ];
-
             $model->insert($data);
-
             $res = [
                 'status' => 200,
                 'error' => false,
@@ -156,20 +122,8 @@ class Inventory extends ResourceController
 
         $rules = [
             'code' => 'required|numeric',
-            'image' => 'uploaded[image]|max_size[image, 4096]|is_image[image]',
-            'product' => 'required',
-            'brand' => 'required',
-            'category' => 'required',
-            'type' => 'required',
-            'description' => 'required',
-            'suplyer' => 'required',
-            'stock' => 'required|numeric',
-            'min_stock' => 'required|numeric',
-            'buy' => 'required|numeric',
-            'sell' => 'required|numeric',
-            'status' => 'required'
+            'brand' => 'required'
         ];
-
         if(!$this->validate($rules)) {
             $res = [
                 'status' => 400,
@@ -186,32 +140,12 @@ class Inventory extends ResourceController
             $decoded = JWT::decode($token, $key, ['HS256']);
             $username = $decoded->username;
 
-            $model = new InventoryModel();
-
-            $file = $this->request->getFile('image');
-            
-            if(! $file->isValid())
-                return $this->fail($file->getErrorString());
-
-            $file->move('./image/product');
+            $model = new BrandModel();
 
             $data = [
                 'code' => $this->request->getVar('code'),
-                'image' => $file->getName(),
-                'product' => $this->request->getVar('product'),
-                'brand' => $this->request->getVar('brand'),
-                'category' => $this->request->getVar('category'),
-                'type' => $this->request->getVar('type'),
-                'description' => $this->request->getVar('description'),
-                'suplyer' => $this->request->getVar('suplyer'),
-                'stock' => $this->request->getVar('stock'),
-                'min_stock' => $this->request->getVar('min_stock'),
-                'buy_price' => $this->request->getVar('buy'),
-                'sell_price' => $this->request->getVar('sell'),
-                'profit' => $this->request->getVar('sell') - $this->request->getVar('buy'),
-                'status' => $this->request->getVar('status'),
+                'brand' => $this->request->getVar('brand')
             ];
-
             $model->update($id, $data);
             $res = [
                 'status' => 200,
@@ -233,7 +167,7 @@ class Inventory extends ResourceController
 
         $id = $this->request->getVar('id');
 
-        $model = new InventoryModel();
+        $model = new BrandModel();
         $data = $model->find($id);
         if($data) {
             $model->delete($id);
@@ -247,7 +181,7 @@ class Inventory extends ResourceController
             $res = [
                 'status' => 400,
                 'error' => true,
-                'msg' => 'Something wrong! Please try again later'
+                'msg' => 'Something wrong! Please try again later.'
             ];
             return $this->respond($res);
         }
@@ -255,7 +189,7 @@ class Inventory extends ResourceController
 
     public function count()
     {
-        $model = new InventoryModel();
+        $model = new BrandModel();
         $count = $model->countAll();
 
         if($count) {

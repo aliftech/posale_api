@@ -39,11 +39,13 @@ $routes->get('category', 'Category::index', ['filter' => 'auth']);
 $routes->post('category_add', 'Category::create', ['filter' => 'auth']);
 $routes->post('category_edit', 'Category::update', ['filter' => 'auth']);
 $routes->post('category_delete', 'Category::delete', ['filter' => 'auth']);
+$routes->get('category_count', 'Category::count', ['filter' => 'auth']);
 
 $routes->get('customer', 'Customer::index', ['filter' => 'auth']);
 $routes->post('customer_add', 'Customer::create', ['filter' => 'auth']);
 $routes->post('customer_edit', 'Customer::update', ['filter' => 'auth']);
 $routes->post('customer_delete', 'Customer::delete', ['filter' => 'auth']);
+$routes->get('customer_count', 'Customer::count', ['filter' => 'auth']);
 
 $routes->get('gender', 'Gender::index', ['filter' => 'auth']);
 $routes->post('gender_add', 'Gender::create', ['filter' => 'auth']);
@@ -59,6 +61,7 @@ $routes->get('inventory', 'Inventory::index', ['filter' => 'auth']);
 $routes->post('inventory_add', 'Inventory::create', ['filter' => 'auth']);
 $routes->post('inventory_edit', 'Inventory::update', ['filter' => 'auth']);
 $routes->post('inventory_delete', 'Inventory::delete', ['filter' => 'auth']);
+$routes->get('inventory_count', 'Inventory::count', ['filter' => 'auth']);
 
 $routes->get('position', 'Position::index', ['filter' => 'auth']);
 $routes->post('position_add', 'Position::create', ['filter' => 'auth']);
@@ -69,6 +72,13 @@ $routes->get('product', 'Product::index', ['filter' => 'auth']);
 $routes->post('product_add', 'Product::create', ['filter' => 'auth']);
 $routes->post('product_edit', 'Product::update', ['filter' => 'auth']);
 $routes->post('product_delete', 'Product::delete', ['filter' => 'auth']);
+$routes->get('product_count', 'Product::count', ['filter' => 'auth']);
+
+$routes->get('brand', 'Brand::index', ['filter' => 'auth']);
+$routes->post('brand_add', 'Brand::create', ['filter' => 'auth']);
+$routes->post('brand_edit', 'Brand::update', ['filter' => 'auth']);
+$routes->post('brand_delete', 'Brand::delete', ['filter' => 'auth']);
+$routes->get('brand_count', 'Brand::count', ['filter' => 'auth']);
 
 
 /*

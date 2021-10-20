@@ -182,4 +182,21 @@ class Category extends ResourceController
             return $this->respond($res);
         }
     }
+
+    public function count() 
+    {
+        $model = new CategoryModel();
+        $count = $model->countAll();
+
+        if($count) {
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'count' => $count
+            ];
+            return $this->respond($res);
+        } else {
+            return $this->failNotFound('No data yet');
+        }
+    }
 }

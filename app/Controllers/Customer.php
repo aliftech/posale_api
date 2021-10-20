@@ -187,4 +187,21 @@ class Customer extends ResourceController
             return $this->respond($res);
         }
     }
+
+    public function count()
+    {
+        $model = new CustomerModel();
+        $count = $model->countAll();
+
+        if($count) {
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'count' => $count
+            ];
+            return $this->respond($res);
+        } else {
+            return $this->failNotFound('No data yet');
+        }
+    }
 }
