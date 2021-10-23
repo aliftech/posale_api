@@ -37,6 +37,17 @@ class Brand extends ResourceController
     public function show($id = null)
     {
         //
+
+        $id = $this->request->getVar('id');
+
+        $model = new BrandModel();
+        $data = $model->where('id', $id)->first();
+        $res = [
+            'status' => 200,
+            'error' => false,
+            'data' => $data
+        ];
+        return $this->respond($res);
     }
 
     /**

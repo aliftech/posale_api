@@ -41,6 +41,17 @@ class Category extends ResourceController
     public function show($id = null)
     {
         //
+
+        $id = $this->request->getVar('id');
+
+        $model = new CategoryModel();
+        $data = $model->where('id', $id)->first();
+        $res = [
+            'status' => 200,
+            'error' => false,
+            'data' => $data
+        ];
+        return $this->respond($res);
     }
 
     /**
@@ -122,30 +133,35 @@ class Category extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        // 
 
         $id = $this->request->getVar('id');
 
-        $model = new CategoryModel();
+        helper(['form']);
 
-        $data = [
-            'category' => $this->request->getVar('category')
+        $rules = [
+            'category' => 'required'
         ];
 
-        $updated = $model->update($id, $data);
-
-        if($updated) {
-            $res = [
-                'status' => 200,
-                'error' => false,
-                'msg' => 'Data have been updated!'
-            ];
-            return $this->respond($res);
-        } else {
+        if(!$this->validate($rules)) {
             $res = [
                 'status' => 400,
                 'error' => true,
-                'msg' => 'Something wrong! Please try again later.'
+                'msg' => $this->validator->getErrors()
+            ];
+            return $this->respond($res);
+        } else {
+            $model = new CategoryModel();
+            $data = [
+                'category' => $this->request->getVar('category')
+            ];
+
+            $model->update($id, $data);
+
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'msg' => 'Data have been updated'
             ];
             return $this->respond($res);
         }

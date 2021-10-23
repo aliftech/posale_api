@@ -37,6 +37,17 @@ class Inventory extends ResourceController
     public function show($id = null)
     {
         //
+
+        $id = $this->request->getVar('id');
+
+        $model = new InventoryModel();
+        $data = $model->where('id', $id)->first();
+        $res = [
+            'status' => 200,
+            'error' => false,
+            'data' => $data
+        ];
+        return $this->respond($res);
     }
 
     /**
