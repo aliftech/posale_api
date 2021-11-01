@@ -67,6 +67,7 @@ $routes->post('inventory_edit', 'Inventory::update', ['filter' => 'auth']);
 $routes->post('inventory_delete', 'Inventory::delete', ['filter' => 'auth']);
 $routes->get('inventory_count', 'Inventory::count', ['filter' => 'auth']);
 $routes->get('inventory_show', 'Inventory::show', ['filter' => 'auth']);
+$routes->post('inventory_upload', 'Inventory::upload', ['filter' => 'auth']);
 
 $routes->get('position', 'Position::index', ['filter' => 'auth']);
 $routes->post('position_add', 'Position::create', ['filter' => 'auth']);
@@ -88,6 +89,26 @@ $routes->post('brand_delete', 'Brand::delete', ['filter' => 'auth']);
 $routes->get('brand_count', 'Brand::count', ['filter' => 'auth']);
 $routes->get('brand_show', 'Brand::show', ['filter' => 'auth']);
 
+$routes->get('suplyer', 'Suplyer::index', ['filter' => 'auth']);
+$routes->post('suplyer_add', 'Suplyer::create', ['filter' => 'auth']);
+$routes->post('suplyer_edit', 'Suplyer::update', ['filter' => 'auth']);
+$routes->post('suplyer_delete', 'Suplyer::delete', ['filter' => 'auth']);
+$routes->get('suplyer_count', 'Suplyer::count', ['filter' => 'auth']);
+$routes->get('suplyer_show', 'Suplyer::show', ['filter' => 'auth']);
+
+$routes->get('icon', 'Icon::index', ['filter' => 'auth']);
+$routes->post('icon_add', 'Icon::create', ['filter' => 'auth']);
+$routes->post('icon_edit', 'Icon::update', ['filter' => 'auth']);
+$routes->post('icon_delete', 'Icon::delete', ['filter' => 'auth']);
+$routes->get('icon_count', 'Icon::count', ['filter' => 'auth']);
+$routes->get('icon_show', 'Icon::show', ['filter' => 'auth']);
+
+$routes->get('menu', 'Menu::index', ['filter' => 'auth']);
+$routes->post('menu_add', 'Menu::create', ['filter' => 'auth']);
+$routes->post('menu_edit', 'Menu::update', ['filter' => 'auth']);
+$routes->post('menu_delete', 'Menu::delete', ['filter' => 'auth']);
+$routes->get('menu_count', 'Menu::count', ['filter' => 'auth']);
+$routes->get('menu_show', 'Menu::show', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------

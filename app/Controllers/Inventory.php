@@ -73,7 +73,7 @@ class Inventory extends ResourceController
 
         $rules = [
             'code' => 'required|numeric',
-            'image' => 'uploaded[image]|max_size[image, 4096]|is_image[image]',
+            'name' => 'required',
             'product' => 'required',
             'brand' => 'required',
             'category' => 'required',
@@ -105,16 +105,13 @@ class Inventory extends ResourceController
 
             $model = new InventoryModel();
 
-            $file = $this->request->getFile('image');
-            
-            if(! $file->isValid())
-                return $this->fail($file->getErrorString());
-
-            $file->move('./image/product');
+            $path = base_url().'/image/product/';
 
             $data = [
                 'code' => $this->request->getVar('code'),
-                'image' => $file->getName(),
+                'name' => $this->request->getVar('name'),
+                'image' => 'product.png',
+                'image_path' => $path,
                 'product' => $this->request->getVar('product'),
                 'brand' => $this->request->getVar('brand'),
                 'category' => $this->request->getVar('category'),
@@ -132,6 +129,60 @@ class Inventory extends ResourceController
             ];
 
             $model->insert($data);
+
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'msg' => 'Data have been added!'
+            ];
+            return $this->respond($res);
+        }
+    }
+
+
+    public function upload($id = null) 
+    {
+        $id = $this->request->getVar('id');
+
+        helper(['form']);
+
+        $rules = [
+            'image' => 'uploaded[image]|max_size[image, 4096]|is_image[image]',
+        ];
+
+        if(!$this->validate($rules)) {
+            $res = [
+                'status' => 400,
+                'error' => true,
+                'msg' => $this->validator->getErrors()
+            ];
+            return $this->respond($res);
+        } else {
+            $key = getenv('TOKEN_SECRET');
+            $header = $this->request->getServer('HTTP_AUTHORIZATION');
+            if(!$header) return $this->failUnauthorized('Token Required');
+            $token = explode(' ', $header)[1];
+    
+            $decoded = JWT::decode($token, $key, ['HS256']);
+            $username = $decoded->username;
+
+            $model = new InventoryModel();
+
+            $file = $this->request->getFile('image');
+            
+            if(! $file->isValid())
+                return $this->fail($file->getErrorString());
+
+            $file->move('./image/product');
+
+            $path = base_url().'/image/product/';
+
+            $data = [
+                'image' => $file->getName(),
+                'image_path' => $path
+            ];
+
+            $model->update($id, $data);
 
             $res = [
                 'status' => 200,
@@ -167,7 +218,7 @@ class Inventory extends ResourceController
 
         $rules = [
             'code' => 'required|numeric',
-            'image' => 'uploaded[image]|max_size[image, 4096]|is_image[image]',
+            'name' => 'required',
             'product' => 'required',
             'brand' => 'required',
             'category' => 'required',
@@ -199,16 +250,9 @@ class Inventory extends ResourceController
 
             $model = new InventoryModel();
 
-            $file = $this->request->getFile('image');
-            
-            if(! $file->isValid())
-                return $this->fail($file->getErrorString());
-
-            $file->move('./image/product');
-
             $data = [
                 'code' => $this->request->getVar('code'),
-                'image' => $file->getName(),
+                'name' => $this->request->getVar('name'),
                 'product' => $this->request->getVar('product'),
                 'brand' => $this->request->getVar('brand'),
                 'category' => $this->request->getVar('category'),

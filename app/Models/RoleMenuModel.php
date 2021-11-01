@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class InventoryModel extends Model
+class RoleMenuModel extends Model
 {
     protected $DBGroup              = 'default';
-    protected $table                = 'inventories';
+    protected $table                = 'role_menus';
     protected $primaryKey           = 'id';
     protected $useAutoIncrement     = true;
     protected $insertID             = 0;
@@ -16,21 +16,8 @@ class InventoryModel extends Model
     protected $protectFields        = true;
     protected $allowedFields        = [
         'id',
-        'code',
-        'name',
-        'image',
-        'image_path',
-        'product',
-        'brand',
-        'category',
-        'type',
-        'description',
-        'suplyer',
-        'stock',
-        'min_stock',
-        'buy_price',
-        'sell_price',
-        'profit',
+        'role',
+        'menu_id',
         'status',
         'created_by',
         'created_at'
