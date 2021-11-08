@@ -4,12 +4,11 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\MenuModel;
-use App\Models\MenuTreeModel;
+use App\Models\RoleModel;
 use Firebase\JWT\JWT;
 use \CodeIgniter\I18n\Time;
 
-class Menu extends ResourceController
+class Role extends ResourceController
 {
     /**
      * Return an array of resource objects, themselves in array format
@@ -20,8 +19,8 @@ class Menu extends ResourceController
     {
         //
 
-        $model = new MenuModel();
-        $data = $model->orderBy('number', 'ASC')->findAll();
+        $model = new RoleModel();
+        $data = $model->orderBy('id', 'DESC')->findAll();
         $res = [
             'status' => 200,
             'error' => false,
@@ -37,11 +36,11 @@ class Menu extends ResourceController
      */
     public function show($id = null)
     {
-        // 
+        //
 
         $id = $this->request->getVar('id');
 
-        $model = new MenuModel();
+        $model = new RoleModel();
         $data = $model->where('id', $id)->first();
         $res = [
             'status' => 200,
@@ -72,11 +71,8 @@ class Menu extends ResourceController
 
         helper(['form']);
 
-        $rules = [
-            'menu' => 'required',
-            'icon' => 'required',
-            'link' => 'required',
-            'number' => 'required|numeric'
+        $rules = [ 
+            'role' => 'required',
         ];
 
         if(!$this->validate($rules)) {
@@ -95,14 +91,10 @@ class Menu extends ResourceController
             $decoded = JWT::decode($token, $key, ['HS256']);
             $username = $decoded->username;
 
-            $model = new MenuModel();
+            $model = new RoleModel();
 
             $data = [
-                'menu' => $this->request->getVar('menu'),
-                'icon' => $this->request->getVar('icon'),
-                'link' => $this->request->getVar('link'),
-                'parent' => $this->request->getVar('parent'),
-                'number' => $this->request->getVar('number'),
+                'role' => $this->request->getVar('role'),
                 'created_by' => $username,
                 'created_at' => Time::now()->setTimezone('Asia/Jakarta')
             ];
@@ -140,10 +132,7 @@ class Menu extends ResourceController
         helper(['form']);
 
         $rules = [
-            'menu' => 'required',
-            'icon' => 'required',
-            'link' => 'required',
-            'number' => 'required|numeric'
+            'role' => 'required'
         ];
 
         if(!$this->validate($rules)) {
@@ -162,14 +151,10 @@ class Menu extends ResourceController
             $decoded = JWT::decode($token, $key, ['HS256']);
             $username = $decoded->username;
 
-            $model = new MenuModel();
+            $model = new RoleModel();
 
             $data = [
-                'menu' => $this->request->getVar('menu'),
-                'icon' => $this->request->getVar('icon'),
-                'link' => $this->request->getVar('link'),
-                'parent' => $this->request->getVar('parent'),
-                'number' => $this->request->getVar('number'),
+                'role' => $this->request->getVar('role'),
             ];
             $model->update($id, $data);
             $res = [
@@ -192,7 +177,7 @@ class Menu extends ResourceController
 
         $id = $this->request->getVar('id');
 
-        $model = new MenuModel();
+        $model = new RoleModel();
         $data = $model->find($id);
         if($data) {
             $model->delete($id);
@@ -214,7 +199,7 @@ class Menu extends ResourceController
 
     public function count()
     {
-        $model = new MenuModel();
+        $model = new RoleModel();
         $count = $model->countAll();
 
         if($count) {
@@ -227,53 +212,5 @@ class Menu extends ResourceController
         } else {
             return $this->failNotFound('No data yet');
         }
-    }
-
-    public function view()
-    {
-        $null = '';
-
-        $model = new MenuTreeModel();
-        $data = $model->orderBy('number', 'ASC')->where('parent', $null)->get();
-        $menu = [];
-        $subMenu = [];
-
-        foreach($data->getResultArray() as $key => $value)
-        {
-
-            $row = $value['menu'];
-            $rowData = $model->orderBy('number', 'ASC')->where('parent', $row)->get();
-
-            foreach($rowData->getResultArray() as $k => $v)
-            {
-                $subMenu[] = $v;
-            }
-
-            $menu[] = [
-                'id' =>$value['id'],
-                'menu' => $value['menu'],
-                'icon' => $value['icon'],
-                'link' => $value['link'],
-                'number' => $value['number'],
-                'parent' => $value['parent'],
-                'created_by' => $value['created_by'],
-                'created_at' => $value['created_at'],
-                'subMenu' => [
-                    $subMenu
-                ]
-            ];
-        }
-
-        $dataMenu = [
-            'data' => $menu->menu
-        ];
-
-        $res = [
-            'status' => 200,
-            'error' => false,
-            'data' => $menu
-        ];
-
-        return $this->respondCreated($res);
     }
 }

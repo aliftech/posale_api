@@ -17,7 +17,11 @@ class RoleMenuModel extends Model
     protected $allowedFields        = [
         'id',
         'role',
-        'menu_id',
+        'number',
+        'menu',
+        'icon',
+        'parent',
+        'link',
         'status',
         'created_by',
         'created_at'

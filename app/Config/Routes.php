@@ -109,6 +109,18 @@ $routes->post('menu_edit', 'Menu::update', ['filter' => 'auth']);
 $routes->post('menu_delete', 'Menu::delete', ['filter' => 'auth']);
 $routes->get('menu_count', 'Menu::count', ['filter' => 'auth']);
 $routes->get('menu_show', 'Menu::show', ['filter' => 'auth']);
+$routes->get('menu_view', 'Menu::view', ['filter' => 'auth']);
+
+$routes->get('role', 'Role::index', ['filter' => 'auth']);
+$routes->post('role_add', 'Role::create', ['filter' => 'auth']);
+$routes->post('role_edit', 'Role::update', ['filter' => 'auth']);
+$routes->post('role_delete', 'Role::delete', ['filter' => 'auth']);
+$routes->get('role_count', 'Role::count', ['filter' => 'auth']);
+$routes->get('role_show', 'Role::show', ['filter' => 'auth']);
+
+$routes->get('rm', 'RoleMenu::index', ['filter' => 'auth']);
+$routes->post('rm_add', 'RoleMenu::create', ['filter' => 'auth']);
+$routes->get('rm_show', 'RoleMenu::show', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------
