@@ -5,7 +5,6 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\MenuModel;
-use App\Models\MenuTreeModel;
 use Firebase\JWT\JWT;
 use \CodeIgniter\I18n\Time;
 
@@ -101,7 +100,6 @@ class Menu extends ResourceController
                 'menu' => $this->request->getVar('menu'),
                 'icon' => $this->request->getVar('icon'),
                 'link' => $this->request->getVar('link'),
-                'parent' => $this->request->getVar('parent'),
                 'number' => $this->request->getVar('number'),
                 'created_by' => $username,
                 'created_at' => Time::now()->setTimezone('Asia/Jakarta')
@@ -168,7 +166,6 @@ class Menu extends ResourceController
                 'menu' => $this->request->getVar('menu'),
                 'icon' => $this->request->getVar('icon'),
                 'link' => $this->request->getVar('link'),
-                'parent' => $this->request->getVar('parent'),
                 'number' => $this->request->getVar('number'),
             ];
             $model->update($id, $data);
@@ -231,49 +228,6 @@ class Menu extends ResourceController
 
     public function view()
     {
-        $null = '';
-
-        $model = new MenuTreeModel();
-        $data = $model->orderBy('number', 'ASC')->where('parent', $null)->get();
-        $menu = [];
-        $subMenu = [];
-
-        foreach($data->getResultArray() as $key => $value)
-        {
-
-            $row = $value['menu'];
-            $rowData = $model->orderBy('number', 'ASC')->where('parent', $row)->get();
-
-            foreach($rowData->getResultArray() as $k => $v)
-            {
-                $subMenu[] = $v;
-            }
-
-            $menu[] = [
-                'id' =>$value['id'],
-                'menu' => $value['menu'],
-                'icon' => $value['icon'],
-                'link' => $value['link'],
-                'number' => $value['number'],
-                'parent' => $value['parent'],
-                'created_by' => $value['created_by'],
-                'created_at' => $value['created_at'],
-                'subMenu' => [
-                    $subMenu
-                ]
-            ];
-        }
-
-        $dataMenu = [
-            'data' => $menu->menu
-        ];
-
-        $res = [
-            'status' => 200,
-            'error' => false,
-            'data' => $menu
-        ];
-
-        return $this->respondCreated($res);
+        
     }
 }

@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class MenuTreeModel extends Model
+class SubmenuModel extends Model
 {
     protected $DBGroup              = 'default';
-    protected $table                = 'menus';
+    protected $table                = 'submenus';
     protected $primaryKey           = 'id';
     protected $useAutoIncrement     = true;
     protected $insertID             = 0;
@@ -16,11 +16,10 @@ class MenuTreeModel extends Model
     protected $protectFields        = true;
     protected $allowedFields        = [
         'id',
-        'menu',
+        'parent',
+        'subMenu',
         'icon',
         'link',
-        'parent',
-        'number',
         'created_by',
         'created_at'
     ];
