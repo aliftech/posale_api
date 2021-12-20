@@ -111,6 +111,13 @@ $routes->get('menu_count', 'Menu::count', ['filter' => 'auth']);
 $routes->get('menu_show', 'Menu::show', ['filter' => 'auth']);
 $routes->get('menu_view', 'Menu::view', ['filter' => 'auth']);
 
+$routes->get('submenu', 'SubMenu::index', ['filter' => 'auth']);
+$routes->post('submenu_add', 'SubMenu::create', ['filter' => 'auth']);
+$routes->post('submenu_edit', 'SubMenu::update', ['filter' => 'auth']);
+$routes->post('submenu_delete', 'SubMenu::delete', ['filter' => 'auth']);
+$routes->get('submenu_count', 'SubMenu::count', ['filter' => 'auth']);
+$routes->get('submenu_show', 'SubMenu::show', ['filter' => 'auth']);
+
 $routes->get('role', 'Role::index', ['filter' => 'auth']);
 $routes->post('role_add', 'Role::create', ['filter' => 'auth']);
 $routes->post('role_edit', 'Role::update', ['filter' => 'auth']);

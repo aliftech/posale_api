@@ -20,8 +20,7 @@ class SubMenu extends ResourceController
         // INDEX OF SUBMENU
 
         $model = new SubmenuModel();
-        $parent = $this->request->getVar('parent');
-        $data = $model->where('parent', $parent)->findAll();
+        $data = $model->orderBy('id', 'ASC')->findAll();
         $res = [
             'status' => 200,
             'error' => false,
@@ -37,7 +36,16 @@ class SubMenu extends ResourceController
      */
     public function show($id = null)
     {
-        //
+        $id = $this->request->getVar('id');
+
+        $model = new SubmenuModel();
+        $data = $model->where('id', $id)->first();
+        $res = [
+            'status' => 200,
+            'error' => false,
+            'data' => $data
+        ];
+        return $this->respond($res);
     }
 
     /**
@@ -57,7 +65,51 @@ class SubMenu extends ResourceController
      */
     public function create()
     {
-        //
+        helper(['form']);
+
+        $rules = [
+            'subMenu' => 'required',
+            'icon' => 'required',
+            'link' => 'required',
+            'number' => 'required|numeric',
+            'parent' => 'required'
+        ];
+
+        if(!$this->validate($rules)) {
+            $res = [
+                'status' => 400,
+                'error' => true,
+                'msg' => $this->validator->getErrors()
+            ];
+            return $this->respond($res);
+        } else {
+            $key = getenv('TOKEN_SECRET');
+            $header = $this->request->getServer('HTTP_AUTHORIZATION');
+            if(!$header) return $this->failUnauthorized('Token Required');
+            $token = explode(' ', $header)[1];
+    
+            $decoded = JWT::decode($token, $key, ['HS256']);
+            $username = $decoded->username;
+
+            $model = new SubmenuModel();
+
+            $data = [
+                'subMenu' => $this->request->getVar('subMenu'),
+                'icon' => $this->request->getVar('icon'),
+                'link' => $this->request->getVar('link'),
+                'number' => $this->request->getVar('number'),
+                'parent' => $this->request->getVar('parent'),
+                'created_by' => $username,
+                'created_at' => Time::now()->setTimezone('Asia/Jakarta')
+            ];
+            $model->insert($data);
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'msg' => 'Data have been added!'
+            ];
+            return $this->respond($res);
+        }
     }
 
     /**
@@ -77,7 +129,50 @@ class SubMenu extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $id = $this->request->getVar('id');
+        helper(['form']);
+
+        $rules = [
+            'subMenu' => 'required',
+            'icon' => 'required',
+            'link' => 'required',
+            'number' => 'required|numeric',
+            'parent' => 'required'
+        ];
+
+        if(!$this->validate($rules)) {
+            $res = [
+                'status' => 400,
+                'error' => true,
+                'msg' => $this->validator->getErrors()
+            ];
+            return $this->respond($res);
+        } else {
+            $key = getenv('TOKEN_SECRET');
+            $header = $this->request->getServer('HTTP_AUTHORIZATION');
+            if(!$header) return $this->failUnauthorized('Token Required');
+            $token = explode(' ', $header)[1];
+    
+            $decoded = JWT::decode($token, $key, ['HS256']);
+            $username = $decoded->username;
+
+            $model = new SubmenuModel();
+
+            $data = [
+                'subMenu' => $this->request->getVar('subMenu'),
+                'icon' => $this->request->getVar('icon'),
+                'link' => $this->request->getVar('link'),
+                'number' => $this->request->getVar('number'),
+                'parent' => $this->request->getVar('parent'),
+            ];
+            $model->update($id, $data);
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'msg' => 'Data have been updated!'
+            ];
+            return $this->respond($res);
+        }
     }
 
     /**
@@ -87,6 +182,42 @@ class SubMenu extends ResourceController
      */
     public function delete($id = null)
     {
-        //
+        $id = $this->request->getVar('id');
+
+        $model = new SubmenuModel();
+        $data = $model->find($id);
+        if($data) {
+            $model->delete($id);
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'msg' => 'Data have been deleted!'
+            ];
+            return $this->respond($res);
+        } else {
+            $res = [
+                'status' => 400,
+                'error' => true,
+                'msg' => 'Something wrong! Please try again later.'
+            ];
+            return $this->respond($res);
+        }
+    }
+
+    public function count()
+    {
+        $model = new SubmenuModel();
+        $count = $model->countAll();
+
+        if($count) {
+            $res = [
+                'status' => 200,
+                'error' => false,
+                'count' => $count
+            ];
+            return $this->respond($res);
+        } else {
+            return $this->failNotFound('No data yet');
+        }
     }
 }

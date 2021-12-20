@@ -20,6 +20,7 @@ class SubmenuModel extends Model
         'subMenu',
         'icon',
         'link',
+        'number',
         'created_by',
         'created_at'
     ];
